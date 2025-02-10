@@ -1,0 +1,26 @@
+CREATE SCHEMA work;
+
+CREATE TABLE IF NOT EXISTS work.utxos (
+	txid CHARACTER VARYING(64) NOT NULL,
+	height INTEGER NOT NULL,
+	vout_n INTEGER NOT NULL,
+	value bigint NOT NULL,
+	address CHARACTER VARYING(34),
+	spent BOOLEAN NOT NULL DEFAULT false
+);
+
+CREATE TABLE IF NOT EXISTS work.txs (
+	txid CHARACTER VARYING(64) NOT NULL,
+	height INTEGER NOT NULL,
+	transaction jsonb NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS work.blocks (
+	height INTEGER NOT NULL,
+	block jsonb NOT NULL
+);
+
+ALTER TABLE ONLY work.utxos ADD CONSTRAINT utxo_pkey PRIMARY KEY (txid, vout_n);
+ALTER TABLE ONLY work.txs ADD CONSTRAINT txs_pkey PRIMARY KEY (txid);
+ALTER TABLE ONLY work.blocks ADD CONSTRAINT blocks_pkey PRIMARY KEY (height);
+
